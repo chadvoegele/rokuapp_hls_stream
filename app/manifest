@@ -1,0 +1,17 @@
+#
+#  Copyright (c) 2016 Roku, Inc. All rights reserved.
+#  Roku Channel Manifest File
+#  Full spec at bit.ly/roku-manifest-file
+#
+
+# Channel Details
+title=StreamHLSVideo
+major_version=1
+minor_version=1
+build_version=1
+
+# Channel Assets
+mm_icon_focus_hd=pkg:/images/channel-poster_hd.png
+
+# Resolution
+ui_resolutions=fhd
