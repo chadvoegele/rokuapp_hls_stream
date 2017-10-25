@@ -34,7 +34,13 @@ Function displayVideo()
 End Function
 
 Function getAuthorizationHeaderValue()
-    pass = getPassword()
+    storedPassword = getStoredPassword()
+    if storedPassword = invalid then
+        pass = getPassword()
+        setStoredPassword(pass)
+    else
+        pass = storedPassword
+    end if
 
     userpass = box(config().username)
     userpass.AppendString(":", 1)
@@ -89,4 +95,18 @@ Function getVideoClip()
     videoclip.Title = "Stream"
 
     return videoclip
+End Function
+
+Function getStoredPassword() As Dynamic
+     sec = CreateObject("roRegistrySection", "Authentication")
+     if sec.Exists("HLSStreamsPassword")
+         return sec.Read("HLSStreamsPassword")
+     endif
+     return invalid
+End Function
+
+Function setStoredPassword(password As String) As Void
+    sec = CreateObject("roRegistrySection", "Authentication")
+    sec.Write("HLSStreamsPassword", password)
+    sec.Flush()
 End Function
