@@ -9,8 +9,6 @@ Sub Main(args As Dynamic)
 End Sub
 
 Function displayVideo()
-    debug = 0
-
     p = CreateObject("roMessagePort")
     video = CreateObject("roVideoScreen")
     video.setMessagePort(p)
@@ -24,9 +22,10 @@ Function displayVideo()
             if msg.isScreenClosed() then
                 print "Closing video screen"
                 exit while
-            else if debug and msg.isRequestFailed()
+            else if msg.isRequestFailed()
+                clearStoredPassword()
                 print "play failed: "; msg.GetMessage()
-            else if debug
+            else
                 print "Unknown event: "; msg.GetType(); " - "; msg.GetMessage()
             endif
         end if
@@ -63,7 +62,7 @@ Function getPassword()
      screen.SetTitle("Password")
      screen.SetText("")
      screen.SetDisplayText("Enter Password")
-     screen.SetMaxLength(8)
+     screen.SetMaxLength(64)
      screen.SetSecureText(1)
      screen.AddButton(1, "Done")
      screen.Show()
@@ -95,6 +94,14 @@ Function getVideoClip()
     videoclip.Title = "Stream"
 
     return videoclip
+End Function
+
+Function clearStoredPassword() As Dynamic
+     sec = CreateObject("roRegistrySection", "Authentication")
+     if sec.Exists("HLSStreamsPassword")
+        sec.Delete("HLSStreamsPassword")
+     endif
+     return invalid
 End Function
 
 Function getStoredPassword() As Dynamic
